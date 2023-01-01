@@ -3,7 +3,9 @@ import htmlKeyboardResponse from '@jspsych/plugin-html-keyboard-response';
 import imageKeyboardResponse from '@jspsych/plugin-image-keyboard-response';
 import jsPsychPreload from '@jspsych/plugin-preload';
 
-const jsPsych = initJsPsych();
+const jsPsych = initJsPsych({
+  on_finish: () => jsPsych.data.displayData(),
+});
 
 const preload = {
   type: jsPsychPreload,
@@ -43,13 +45,21 @@ const fixation = {
   type: htmlKeyboardResponse,
   stimulus: '<div style="font-size:60px;">+</div>',
   choices: 'NO_KEYS', // makes trial last until duration is over no matter the input
-  trial_duration: 1000,
+  trial_duration: () =>
+    jsPsych.randomization.sampleWithoutReplacement(
+      [250, 500, 750, 1000, 1250, 1500, 1750, 2000],
+      1 // number of samples
+    )[0],
 };
 
 const test = {
   type: imageKeyboardResponse,
   stimulus: jsPsych.timelineVariable('stimulus'),
   choices: ['f', 'j'],
+  data: {
+    // here we can store arbitrary additional data that will help us in data processing
+    task: 'response',
+  },
 };
 
 const test_procedure = {

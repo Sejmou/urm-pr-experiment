@@ -37,8 +37,8 @@ const instructions = {
 };
 
 const test_stimuli = [
-  { stimulus: 'img/blue.png' },
-  { stimulus: 'img/orange.png' },
+  { stimulus: 'img/blue.png', correct_response: 'f' },
+  { stimulus: 'img/orange.png', correct_response: 'j' },
 ];
 
 const fixation = {
@@ -59,6 +59,14 @@ const test = {
   data: {
     // here we can store arbitrary additional data that will help us in data processing
     task: 'response',
+    correct_response: jsPsych.timelineVariable('correct_response'),
+  },
+  on_finish: (data: any) => {
+    data.correct = jsPsych.pluginAPI.compareKeys(
+      // advantage of using this function: case insensitive by default!
+      data.response,
+      data.correct_response
+    );
   },
 };
 

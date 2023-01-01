@@ -117,6 +117,16 @@
   resolved "https://registry.yarnpkg.com/@jspsych/plugin-html-keyboard-response/-/plugin-html-keyboard-response-1.1.2.tgz#36b4ccdd158cf9980de57af07202185fc156a815"
   integrity sha512-2qxXK7IgbAPCqDq+WNu4QK0aRZwcmm0mutWGyIB0a9D0eSsg/WK1Sg4aRoZQDYrEI0QB4hCdLnShqtcJ+mF8Ag==
 
+"@jspsych/plugin-image-keyboard-response@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@jspsych/plugin-image-keyboard-response/-/plugin-image-keyboard-response-1.1.2.tgz#4830ba4f7535b00518c3e74dcc2d861817540b33"
+  integrity sha512-0ZOGLwnEtVOK86it33rDQF4cUSk6w2VblRmtarymRnPAMAui/yIoNliZo/NlXyA87lyed2WED54Y1KBVTZ2qVQ==
+
+"@jspsych/plugin-preload@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@jspsych/plugin-preload/-/plugin-preload-1.1.2.tgz#266d91ef0977f1c02c753b6d9bb184e59909a9d2"
+  integrity sha512-ZBqLL35z+bVySqeuv0/uU4NZKWAorwWusPNnJctR9ZCkrJNqRqhfouEHCj1WZh5hivrKq0vRoDmQwTqIj+kyxg==
+
 auto-bind@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/auto-bind/-/auto-bind-4.0.0.tgz#e3589fc6c2da8f7ca43ba9f84fa52a744fc997fb"

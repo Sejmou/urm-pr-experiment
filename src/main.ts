@@ -77,4 +77,21 @@ const test_procedure = {
   repetitions: 5,
 };
 
-jsPsych.run([preload, welcome, instructions, test_procedure]);
+const debrief_block = {
+  type: htmlKeyboardResponse,
+  stimulus: () => {
+    const trials = jsPsych.data.get().filter({ task: 'response' });
+    const correct_trials = trials.filter({ correct: true });
+    const accuracy = Math.round(
+      (correct_trials.count() / trials.count()) * 100
+    );
+    const rt = Math.round(correct_trials.select('rt').mean());
+    return `
+      <p>You responded correctly on ${accuracy}% of the trials.</p>
+      <p>Your average response time was ${rt}ms.</p>
+      <p>Press any key to complete the experiment. Thank you!</p>
+    `;
+  },
+};
+
+jsPsych.run([preload, welcome, instructions, test_procedure, debrief_block]);

@@ -1,3 +1,4 @@
+import 'jspsych/css/jspsych.css';
 import { initJsPsych } from 'jspsych';
 import htmlKeyboardResponse from '@jspsych/plugin-html-keyboard-response';
 import imageKeyboardResponse from '@jspsych/plugin-image-keyboard-response';

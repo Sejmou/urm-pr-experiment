@@ -34,16 +34,27 @@ const instructions = {
   post_trial_gap: 2000,
 };
 
-const blue_trial = {
+const test_stimuli = [
+  { stimulus: 'img/blue.png' },
+  { stimulus: 'img/orange.png' },
+];
+
+const fixation = {
+  type: htmlKeyboardResponse,
+  stimulus: '<div style="font-size:60px;">+</div>',
+  choices: 'NO_KEYS', // makes trial last until duration is over no matter the input
+  trial_duration: 1000,
+};
+
+const test = {
   type: imageKeyboardResponse,
-  stimulus: 'img/blue.png',
+  stimulus: jsPsych.timelineVariable('stimulus'),
   choices: ['f', 'j'],
 };
 
-const orange_trial = {
-  type: imageKeyboardResponse,
-  stimulus: 'img/orange.png',
-  choices: ['f', 'j'],
+const test_procedure = {
+  timeline: [fixation, test],
+  timeline_variables: test_stimuli,
 };
 
-jsPsych.run([preload, welcome, instructions, blue_trial, orange_trial]);
+jsPsych.run([preload, welcome, instructions, test_procedure]);

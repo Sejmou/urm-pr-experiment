@@ -55,6 +55,8 @@ const test = {
 const test_procedure = {
   timeline: [fixation, test],
   timeline_variables: test_stimuli,
+  randomize_order: true,
+  repetitions: 5,
 };
 
 jsPsych.run([preload, welcome, instructions, test_procedure]);

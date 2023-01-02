@@ -5,7 +5,6 @@ import { initJsPsych } from 'jspsych';
 import htmlKeyboardResponse from '@jspsych/plugin-html-keyboard-response';
 import imageKeyboardResponse from '@jspsych/plugin-image-keyboard-response';
 import jsPsychPreload from '@jspsych/plugin-preload';
-import { nextStage } from '../../shared/experiments';
 
 const runExperiment = async () => {
   const jsPsych = initJsPsych({
@@ -106,8 +105,6 @@ const runExperiment = async () => {
     test_procedure,
     debrief_block,
   ]);
-  alert('Experiment finished!');
-  nextStage();
 };
 
 export default runExperiment;

@@ -1,4 +1,24 @@
-import { nextStage, experiments } from '../shared/experiments';
+import {
+  endExperiments,
+  getExperimentState,
+  nextStage,
+  runCurrentExperiment,
+} from '../shared/experiments';
 
-experiments[0].run();
-//nextStage();
+async function main() {
+  while (true) {
+    const state = getExperimentState();
+    if (state === 'in progress') {
+      await runCurrentExperiment();
+      nextStage();
+    } else {
+      if (state == 'done') {
+        alert('Thank you for participating!');
+      }
+      break;
+    }
+  }
+  endExperiments();
+}
+
+main();

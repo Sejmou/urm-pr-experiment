@@ -5,7 +5,7 @@ export function getQueryParam(key: string) {
 
 export function resetQueryParams() {
   const searchParams = new URLSearchParams(window.location.search);
-  for (const [key, value] of searchParams as any) {
+  for (const [key] of searchParams as any) {
     // don't know why this is necessary - should be fixed: https://github.com/microsoft/TypeScript/issues/15243
     searchParams.delete(key);
   }

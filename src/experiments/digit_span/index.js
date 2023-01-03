@@ -6,11 +6,8 @@ import '@lib/jspsych-6.0.4/plugins/jspsych-survey-text.js';
 import '@lib/jspsych-6.0.4/plugins/jspsych-instructions.js';
 import '@lib/jspsych-6.0.4/plugins/jspsych-fullscreen.js';
 import '@lib/jspsych-6.0.4/css/jspsych_digitspan.css';
-import {
-  getParticipantId,
-  getStageCompletionMessageHTML,
-} from '../../shared/experiments';
-import { getResultsFilename } from '../utils';
+import { getParticipantId } from '../../shared/experiments';
+import { getResultsFilename, createConclusionMessageBlock } from '../utils';
 
 // This code has been adapted from https://github.com/mahiluthra/working_memory_tests/blob/c4700e7765833364d2c913667b99063afbaa2437/digit_span_task.html
 
@@ -168,15 +165,7 @@ const experiment = new Promise(resolve => {
     trial_duration: 1000,
   };
 
-  const conclusion = {
-    type: 'instructions',
-    pages: function () {
-      return [getStageCompletionMessageHTML()];
-    },
-    allow_backward: false,
-    button_label_next: 'Continue',
-    show_clickable_nav: true,
-  };
+  const conclusion = createConclusionMessageBlock();
 
   var test_stack = {
     timeline: [test_stimuli],

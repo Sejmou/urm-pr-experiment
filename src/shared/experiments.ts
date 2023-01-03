@@ -7,6 +7,13 @@ import {
 
 export const experiments = [
   {
+    displayName: 'Symmetry Span Task',
+    run: async () => {
+      const module = await import('../experiments/symmetry_span');
+      return module.default();
+    },
+  },
+  {
     displayName: 'Digit Span Task',
     run: async () => {
       const module = await import('../experiments/digit_span');
@@ -73,7 +80,7 @@ export const getCurrentStage = () => {
   return +(searchParams.get('currentStage') || 0);
 };
 
-const getStageCompletionMessage = () => {
+export const getStageCompletionMessage = () => {
   const currentStage = getCurrentStage();
   const totalStages = experiments.length;
   if (currentStage === totalStages)
@@ -82,8 +89,4 @@ const getStageCompletionMessage = () => {
   return `You have completed stage ${currentStage} of ${totalStages}. Only ${remainingStages} more stage${
     remainingStages == 1 ? '' : 's'
   } to go!`;
-};
-
-export const getStageCompletionMessageHTML = () => {
-  return `<div>${getStageCompletionMessage()}</div>`;
 };

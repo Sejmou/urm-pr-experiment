@@ -7,9 +7,9 @@ import {
 
 export const experiments = [
   {
-    displayName: 'Experiment 0',
+    displayName: 'Digit Span Task',
     run: async () => {
-      const module = await import('../experiments/jsexample');
+      const module = await import('../experiments/digit_span');
       return module.default();
     },
   },

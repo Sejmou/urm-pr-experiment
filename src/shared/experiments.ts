@@ -22,6 +22,12 @@ export const experiments = [
   },
 ];
 
+export const getParticipantId = () => {
+  const participantId = getQueryParam('participantId');
+  if (!participantId) throw new Error('No participantId');
+  return participantId;
+};
+
 export const startExperiments = () => {
   const participantId = getQueryParam('participantId') || generateUUID();
   setQueryParams({ participantId, currentStage: '1' });

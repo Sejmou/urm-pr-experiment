@@ -1,5 +1,6 @@
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
+import eslint from 'vite-plugin-eslint';
 
 const root = resolve(__dirname, 'src');
 
@@ -24,4 +25,5 @@ export default defineConfig({
       '@lib': resolve(root, 'lib'),
     },
   },
+  plugins: [eslint()],
 });

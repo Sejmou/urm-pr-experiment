@@ -2,6 +2,8 @@
  * Example plugin template
  */
 
+/* eslint-disable no-unused-vars */
+
 jsPsych.plugins['digit-span-recall'] = (function () {
   var plugin = {};
 
@@ -57,22 +59,11 @@ jsPsych.plugins['digit-span-recall'] = (function () {
       9: '0',
     };
 
-    function indexOfArray(val, array) {
-      var hash = {},
-        indexes = {},
-        i,
-        j;
-      for (i = 0; i < array.length; i++) {
-        hash[array[i]] = i;
-      }
-      return hash.hasOwnProperty(val) ? hash[val] : -1;
-    }
-
-    var recordClick = function (data) {
-      var tt = data.getAttribute('id');
-      var tt = '#' + tt;
+    globalThis.recordClick = function (element) {
+      var tt = element.getAttribute('id');
+      tt = '#' + tt;
       display_element.querySelector(tt).className = 'jspsych-digit-span-recall';
-      var recalledN = data.getAttribute('data-choice');
+      var recalledN = element.getAttribute('data-choice');
       recalledGrid.push(numbertobutton[recalledN]);
       var div = document.getElementById('recall_space');
       display += numbertobutton[recalledN] + ' ';
@@ -80,7 +71,7 @@ jsPsych.plugins['digit-span-recall'] = (function () {
       //  console.log(recalledGrid)
     };
 
-    var clearSpace = function (data) {
+    globalThis.clearSpace = function (data) {
       recalledGrid = recalledGrid.slice(0, recalledGrid.length - 1);
       console.log(recalledGrid);
       var div = document.getElementById('recall_space');
@@ -89,10 +80,10 @@ jsPsych.plugins['digit-span-recall'] = (function () {
     };
 
     var matrix = [];
-    for (var i = 0; i < grid; i++) {
-      m1 = i;
-      for (var h = 0; h < grid; h++) {
-        m2 = h;
+    for (let i = 0; i < grid; i++) {
+      const m1 = i;
+      for (let h = 0; h < grid; h++) {
+        const m2 = h;
         matrix.push([m1, m2]);
       }
     }
@@ -124,7 +115,7 @@ jsPsych.plugins['digit-span-recall'] = (function () {
 
     var buttons = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
 
-    for (var i = 0; i < matrix.length; i++) {
+    for (let i = 0; i < matrix.length; i++) {
       var str = buttons[i];
       paper.innerHTML +=
         '<div class="jspsych-digit-span-recall" style="position: absolute; top:' +
@@ -163,9 +154,9 @@ jsPsych.plugins['digit-span-recall'] = (function () {
     display_element
       .querySelector('#jspsych-html-button-response-button')
       .addEventListener('click', function (e) {
-        var accuracy = 1;
+        let accuracy = 1;
         if (correctGrid.length == recalledGrid.length) {
-          for (var i = 0; i < correctGrid.length; i++) {
+          for (let i = 0; i < correctGrid.length; i++) {
             if (recalledGrid[i] != correctGrid[i]) {
               accuracy = 0;
             }

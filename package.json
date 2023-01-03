@@ -9,8 +9,10 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "eslint": "^8.31.0",
     "typescript": "^4.9.3",
-    "vite": "^4.0.0"
+    "vite": "^4.0.0",
+    "vite-plugin-eslint": "^1.8.1"
   },
   "dependencies": {
     "@jspsych/plugin-html-keyboard-response": "^1.1.2",

@@ -6,8 +6,9 @@ import '@lib/jspsych-6.0.4/plugins/jspsych-survey-text.js';
 import '@lib/jspsych-6.0.4/plugins/jspsych-instructions.js';
 import '@lib/jspsych-6.0.4/plugins/jspsych-fullscreen.js';
 import '@lib/jspsych-6.0.4/css/jspsych_digitspan.css';
-import '@lib/jquery.min.js';
-// import '@lib/jstat.min.js';
+import { getParticipantId } from '../../shared/experiments';
+
+// This code has been adapted from https://github.com/mahiluthra/working_memory_tests/blob/c4700e7765833364d2c913667b99063afbaa2437/digit_span_task.html
 
 /*
     This is a web-based digit span working memory test.
@@ -24,12 +25,10 @@ import '@lib/jquery.min.js';
 const experiment = new Promise(resolve => {
   //----- CUSTOMIZABLE VARIABLES -----------------------------------------
 
-  var nTrials = 14; // number of trials in the test
+  var nTrials = 1; // number of trials in the test
   var minSetSize = 3; // starting digit length
   var stimuli_duration = 1000; // number of miliseconds to display each digit
   var recall_duration = null; // number of miliseconds to allow recall. If null, there is no time limit.
-  var file_name = null; // file name for data file. if null, a default name consisting of the participant ID and a unique number is chosen.
-  var local = true; // save the data file locally.
   // If this test is being run online (e.g., on MTurk), true will cause the file to be downloaded to the participant's computer.
   // If this test is on a server, and you wish to save the data file to that server, change this to false.
   // If changed to false, ensure that the php file (its in the directory!) and the empty "data" folder has also been appropriately uploaded to the server.
@@ -51,15 +50,16 @@ const experiment = new Promise(resolve => {
   var consec_error_score = 0;
 
   // first page. identifies participant for data storage
-  var p_details = {
-    type: 'survey-text',
-    questions: [{ prompt: 'Enter participant number, name, or ID' }],
-    on_finish: function () {
-      var partN = jsPsych.data.get().last(1).values()[0].partNum;
-      partN = partN.replace(/['"]+/g, '');
-      //      console.log(partN[0])
-    },
-  };
+  // var p_details = {
+  //   type: 'survey-text',
+  //   questions: [{ prompt: 'Enter participant number, name, or ID' }],
+  //   on_finish: function () {
+  //     var partN = jsPsych.data.get().last(1).values()[0].partNum;
+  //     partN = partN.replace(/['"]+/g, '');
+  //     //      console.log(partN[0])
+  //   },
+  // };
+  const participantId = getParticipantId();
 
   // instruction page
   var instructions = {
@@ -117,7 +117,7 @@ const experiment = new Promise(resolve => {
     },
     trial_duration: recall_duration,
     on_finish: function () {
-      acc = jsPsych.data.get().last(1).values()[0].accuracy;
+      var acc = jsPsych.data.get().last(1).values()[0].accuracy;
       if (acc == 1) {
         if (highest_span_score < minSetSize) {
           highest_span_score = minSetSize;
@@ -188,7 +188,7 @@ const experiment = new Promise(resolve => {
         '.<br><br>Please tell the Research Assistant you have completed the task.</div>'
       );
     },
-    choices: jsPsych.NO_KEYS,
+    choices: ['Enter'],
     //  trial_duration:1000
   };
 
@@ -207,37 +207,7 @@ const experiment = new Promise(resolve => {
     repetitions: 3,
   };
 
-  // function saveData(filename, filedata) {
-  //   $.ajax({
-  //     type: 'post',
-  //     cache: false,
-  //     url: 'save_data.php', // this is the path to the above PHP script
-  //     data: { filename: filename, filedata: filedata },
-  //   });
-  // }
-
-  var IDsub = Date.now();
-
-  var dataLog = {
-    type: 'html-keyboard-response',
-    stimulus: ' ',
-    trial_duration: 100,
-    on_finish: function (data) {
-      var data = jsPsych.data.get().filter({ trial_type: 'digit-span-recall' });
-      if (file_name == null) {
-        file_name = 'WM_digit_span_' + partN + '_' + IDsub.toString() + '.csv';
-      } else {
-        file_name += '.csv';
-      }
-      if (local) {
-        data.localSave('csv', file_name);
-      } else {
-        saveData(file_name, data.csv());
-      }
-    },
-  };
-
-  var timeline = [p_details];
+  var timeline = [];
   timeline.push({
     type: 'fullscreen',
     fullscreen_mode: true,
@@ -252,13 +222,17 @@ const experiment = new Promise(resolve => {
     type: 'fullscreen',
     fullscreen_mode: false,
   });
-  timeline.push(dataLog);
   timeline.push(conclusion);
 
   jsPsych.init({
     timeline: timeline,
-    on_finish: function () {
-      jsPsych.data.displayData(); // comment out if you do not want to display results at the end of task
+    on_finish: function (data) {
+      const relevantData = data.filter({ trial_type: 'digit-span-recall' });
+      relevantData.localSave(
+        'csv',
+        `${participantId}_digit_span_recall_${Date.now()}.csv`
+      );
+      console.log(relevantData);
       resolve();
     },
   });

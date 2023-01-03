@@ -19,4 +19,9 @@ export default defineConfig({
       },
     },
   },
+  resolve: {
+    alias: {
+      '@lib': resolve(root, 'lib'),
+    },
+  },
 });

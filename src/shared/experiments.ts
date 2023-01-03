@@ -7,6 +7,13 @@ import {
 
 export const experiments = [
   {
+    displayName: 'Experiment 0',
+    run: async () => {
+      const module = await import('../experiments/jsexample');
+      return module.default();
+    },
+  },
+  {
     displayName: 'Experiment 1',
     run: async () => {
       const module = await import('../experiments/example');

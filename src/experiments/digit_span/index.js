@@ -6,7 +6,10 @@ import '@lib/jspsych-6.0.4/plugins/jspsych-survey-text.js';
 import '@lib/jspsych-6.0.4/plugins/jspsych-instructions.js';
 import '@lib/jspsych-6.0.4/plugins/jspsych-fullscreen.js';
 import '@lib/jspsych-6.0.4/css/jspsych_digitspan.css';
-import { getParticipantId } from '../../shared/experiments';
+import {
+  getParticipantId,
+  getStageCompletionMessageHTML,
+} from '../../shared/experiments';
 
 // This code has been adapted from https://github.com/mahiluthra/working_memory_tests/blob/c4700e7765833364d2c913667b99063afbaa2437/digit_span_task.html
 
@@ -25,14 +28,11 @@ import { getParticipantId } from '../../shared/experiments';
 const experiment = new Promise(resolve => {
   //----- CUSTOMIZABLE VARIABLES -----------------------------------------
 
-  var nTrials = 1; // number of trials in the test
+  var nTrials = 2; // number of trials in the test
   var minSetSize = 3; // starting digit length
   var stimuli_duration = 1000; // number of miliseconds to display each digit
   var recall_duration = null; // number of miliseconds to allow recall. If null, there is no time limit.
-  // If this test is being run online (e.g., on MTurk), true will cause the file to be downloaded to the participant's computer.
-  // If this test is on a server, and you wish to save the data file to that server, change this to false.
-  // If changed to false, ensure that the php file (its in the directory!) and the empty "data" folder has also been appropriately uploaded to the server.
-  // Incase of problems, feel free to contact me :)
+  const debug = true; // set to true to skip demo procedure and show only two trials in test procedure
 
   //----------------------------------------------------------------------
 
@@ -49,16 +49,6 @@ const experiment = new Promise(resolve => {
   var highest_span_score = 0;
   var consec_error_score = 0;
 
-  // first page. identifies participant for data storage
-  // var p_details = {
-  //   type: 'survey-text',
-  //   questions: [{ prompt: 'Enter participant number, name, or ID' }],
-  //   on_finish: function () {
-  //     var partN = jsPsych.data.get().last(1).values()[0].partNum;
-  //     partN = partN.replace(/['"]+/g, '');
-  //     //      console.log(partN[0])
-  //   },
-  // };
   const participantId = getParticipantId();
 
   // instruction page
@@ -74,11 +64,11 @@ const experiment = new Promise(resolve => {
     show_clickable_nav: true,
   };
 
-  var instructions_node = {
+  var after_demo_instructions = {
     type: 'instructions',
     pages: function () {
       var pageOne =
-        "<div style='font-size:20px;'>You have completed the practice trials. <br><br> If you have further questions about the task, ask the researcher now.<br> If you are clear about the task, click 'Next' to proceed to the main trials.<br><br></div>";
+        "<div style='font-size:20px;'>You have completed the practice trials. <br><br> If you are clear about the task, click 'Next' to proceed to the main trials.</div>";
       return [pageOne];
     },
     allow_backward: false,
@@ -177,19 +167,14 @@ const experiment = new Promise(resolve => {
     trial_duration: 1000,
   };
 
-  var conclusion = {
-    type: 'html-keyboard-response',
-    stimulus: function () {
-      return (
-        '<div style="font-size:20px;">You have completed the task.<br>Thank you for your participation in this task.<br><br>Maximum number of digits recalled correctly was ' +
-        highest_span_score +
-        '.<br><br>Maximum number of digits reached before making two consecutive errors was ' +
-        consec_error_score +
-        '.<br><br>Please tell the Research Assistant you have completed the task.</div>'
-      );
+  const conclusion = {
+    type: 'instructions',
+    pages: function () {
+      return [getStageCompletionMessageHTML()];
     },
-    choices: ['Enter'],
-    //  trial_duration:1000
+    allow_backward: false,
+    button_label_next: 'Continue',
+    show_clickable_nav: true,
   };
 
   var test_stack = {
@@ -199,7 +184,7 @@ const experiment = new Promise(resolve => {
 
   var test_procedure = {
     timeline: [test_stack, recall, feedback],
-    repetitions: nTrials,
+    repetitions: !debug ? nTrials : 2,
   };
 
   var demo_procedure = {
@@ -212,12 +197,11 @@ const experiment = new Promise(resolve => {
     type: 'fullscreen',
     fullscreen_mode: true,
   });
-  timeline = timeline.concat([
-    instructions,
-    demo_procedure,
-    instructions_node,
-    test_procedure,
-  ]);
+  timeline = timeline.concat(
+    !debug
+      ? [instructions, demo_procedure, after_demo_instructions, test_procedure]
+      : [instructions, test_procedure]
+  );
   timeline.push({
     type: 'fullscreen',
     fullscreen_mode: false,

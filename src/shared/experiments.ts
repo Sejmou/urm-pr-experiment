@@ -72,3 +72,18 @@ export const getCurrentStage = () => {
   const searchParams = new URLSearchParams(window.location.search);
   return +(searchParams.get('currentStage') || 0);
 };
+
+const getStageCompletionMessage = () => {
+  const currentStage = getCurrentStage();
+  const totalStages = experiments.length;
+  if (currentStage === totalStages)
+    return 'You have completed all stages of the experiment!';
+  const remainingStages = totalStages - currentStage;
+  return `You have completed stage ${currentStage} of ${totalStages}. Only ${remainingStages} more stage${
+    remainingStages == 1 ? '' : 's'
+  } to go!`;
+};
+
+export const getStageCompletionMessageHTML = () => {
+  return `<div>${getStageCompletionMessage()}</div>`;
+};

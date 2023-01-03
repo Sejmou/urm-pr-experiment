@@ -10,6 +10,7 @@ import {
   getParticipantId,
   getStageCompletionMessageHTML,
 } from '../../shared/experiments';
+import { getResultsFilename } from '../utils';
 
 // This code has been adapted from https://github.com/mahiluthra/working_memory_tests/blob/c4700e7765833364d2c913667b99063afbaa2437/digit_span_task.html
 
@@ -214,7 +215,7 @@ const experiment = new Promise(resolve => {
       const relevantData = data.filter({ trial_type: 'digit-span-recall' });
       relevantData.localSave(
         'csv',
-        `${participantId}_digit_span_recall_${Date.now()}.csv`
+        getResultsFilename('digit_span', participantId)
       );
       console.log(relevantData);
       resolve();

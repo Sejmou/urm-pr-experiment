@@ -2,6 +2,7 @@ import { DataCollection } from 'jspsych/dist/modules/data/DataCollection';
 import {
   getCurrentStage,
   getStageCompletionMessage,
+  isMusicTestGroup,
 } from '../shared/experiment';
 import { uploadExperimentResults } from '../shared/firebase';
 import seedrandom from 'seedrandom';
@@ -38,7 +39,9 @@ export async function storeTaskResults(results: {
 }
 
 function getResultsFilename(experimentTask: string, participantId: string) {
-  return `${getCurrentStage()}_${experimentTask}_${participantId}_${Date.now()}.csv`;
+  return `${
+    isMusicTestGroup() ? 'music' : 'silence'
+  }_${getCurrentStage()}_${experimentTask}_${participantId}_${Date.now()}.csv`;
 }
 
 /**

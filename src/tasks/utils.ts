@@ -4,6 +4,7 @@ import {
   getStageCompletionMessage,
 } from '../shared/experiment';
 import { uploadExperimentResults } from '../shared/firebase';
+import seedrandom from 'seedrandom';
 
 function getStageCompletionMessageHTML() {
   return `<div>${getStageCompletionMessage()}</div>`;
@@ -38,4 +39,13 @@ export async function storeTaskResults(results: {
 
 function getResultsFilename(experimentTask: string, participantId: string) {
   return `${getCurrentStage()}_${experimentTask}_${participantId}_${Date.now()}.csv`;
+}
+
+/**
+ * This could be called at the start of each task to ensure that the experiment is the same for each participant.
+ *
+ * Not sure if it's a good idea though lol
+ */
+export function setRandomSeed() {
+  seedrandom('urm-pr-experiment', { global: true });
 }

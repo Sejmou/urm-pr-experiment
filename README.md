@@ -23,7 +23,7 @@ or
 npm run dev
 ```
 
-## Downloading experiment results collected on Firebase (probably only works for me (Sejmou) as Firebase Project "owner")
+## Downloading experiment results collected on Google Cloud Storage via Firebase (probably only works for me (Sejmou) as Firebase Project "owner")
 
 1. Download and install `gsutil` - instructions [here](https://cloud.google.com/storage/docs/gsutil_install)
 2. After installation, run `gcloud auth login` to log in (otherwise will get 401 Unauthorized error with following command)

@@ -7,7 +7,12 @@ import '@lib/jspsych-6.0.4/plugins/jspsych-instructions.js';
 import '@lib/jspsych-6.0.4/plugins/jspsych-fullscreen.js';
 import '@lib/jspsych-6.0.4/css/jspsych_digitspan.css';
 import { getParticipantId } from '../../shared/experiments';
-import { getResultsFilename, createConclusionMessageBlock } from '../utils';
+import {
+  getResultsFilename,
+  createConclusionMessageBlock,
+  storeExperimentResults,
+} from '../utils';
+import { uploadExperimentResults } from '../../shared/firebase';
 
 // This code has been adapted from https://github.com/mahiluthra/working_memory_tests/blob/c4700e7765833364d2c913667b99063afbaa2437/digit_span_task.html
 
@@ -200,13 +205,13 @@ const experiment = new Promise(resolve => {
 
   jsPsych.init({
     timeline: timeline,
-    on_finish: function (data) {
+    on_finish: async function (data) {
       const relevantData = data.filter({ trial_type: 'digit-span-recall' });
-      relevantData.localSave(
-        'csv',
-        getResultsFilename('digit_span', participantId)
-      );
-      console.log(relevantData);
+      await storeExperimentResults({
+        task: 'digit_span',
+        participantId,
+        data: relevantData,
+      });
       resolve();
     },
   });

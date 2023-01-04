@@ -7,16 +7,16 @@ import {
 
 export const experiments = [
   {
-    displayName: 'Symmetry Span Task',
+    displayName: 'Digit Span Task',
     run: async () => {
-      const module = await import('../experiments/symmetry_span');
+      const module = await import('../experiments/digit_span');
       return module.default();
     },
   },
   {
-    displayName: 'Digit Span Task',
+    displayName: 'Symmetry Span Task',
     run: async () => {
-      const module = await import('../experiments/digit_span');
+      const module = await import('../experiments/symmetry_span');
       return module.default();
     },
   },

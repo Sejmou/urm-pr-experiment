@@ -5,10 +5,20 @@ import { initJsPsych } from 'jspsych';
 import htmlKeyboardResponse from '@jspsych/plugin-html-keyboard-response';
 import imageKeyboardResponse from '@jspsych/plugin-image-keyboard-response';
 import jsPsychPreload from '@jspsych/plugin-preload';
+import { getParticipantId } from '../../shared/experiments';
+import { storeExperimentResults } from '../utils';
 
 const runExperiment = async () => {
+  const participantId = getParticipantId();
   const jsPsych = initJsPsych({
-    on_finish: () => jsPsych.data.displayData(),
+    on_finish: async () => {
+      const data = jsPsych.data.get();
+      await storeExperimentResults({
+        participantId,
+        task: 'example_task',
+        data,
+      });
+    },
   });
 
   const preload = {

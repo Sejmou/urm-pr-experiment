@@ -23,7 +23,7 @@ import '@lib/jspsych-6.0.4/css/jspsych_grid.css';
   */
 
 import { getParticipantId } from '../../shared/experiments';
-import { getResultsFilename } from '../utils';
+import { storeExperimentResults } from '../utils';
 
 const experiment = new Promise(resolve => {
   //----- CUSTOMIZABLE VARIABLES -----------------------------------------
@@ -326,17 +326,19 @@ const experiment = new Promise(resolve => {
 
   jsPsych.init({
     timeline: timeline,
-    on_finish: function (data) {
+    on_finish: async function (data) {
       const relevantData = data
         .get()
         .filter([
           { trial_type: 'spatial-span-recall' },
           { trial_type: 'symmetry-judgement-task' },
         ]);
-      relevantData.localSave(
-        'csv',
-        getResultsFilename('symmetry_span', participantId)
-      );
+      await storeExperimentResults({
+        task: 'symmetry_span',
+        participantId,
+        data: relevantData,
+      });
+      resolve();
       resolve();
     },
   });

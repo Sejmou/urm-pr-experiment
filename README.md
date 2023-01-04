@@ -1,5 +1,5 @@
 # URM PR Experiment
-This is the code repository for the experiments that are part of our [User Research Methods](https://tiss.tuwien.ac.at/course/courseDetails.xhtml?dswid=9954&dsrid=202&courseNr=193056&semester=2022W&locale=en) project at TU Wien.
+This is the code repository for the tasks that are part of our experiment we conducted for the [User Research Methods](https://tiss.tuwien.ac.at/course/courseDetails.xhtml?dswid=9954&dsrid=202&courseNr=193056&semester=2022W&locale=en) project at TU Wien.
 
 ## Installation
 Make sure [yarn](https://classic.yarnpkg.com/lang/en/docs/install) is installed and run

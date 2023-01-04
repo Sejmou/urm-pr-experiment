@@ -24,8 +24,8 @@ import '@lib/jspsych-6.0.4/css/jspsych_grid.css';
 
 import symm_instructions from './symm_instructions.png';
 import symmetrySpanExampleGrid from './symmetrySpanExampleGrid.png';
-import { getParticipantId } from '../../shared/experiments';
-import { storeExperimentResults, createConclusionMessageBlock } from '../utils';
+import { getParticipantId } from '../../shared/experiment';
+import { storeTaskResults, createConclusionMessageBlock } from '../utils';
 
 const experiment = new Promise(resolve => {
   //----- CUSTOMIZABLE VARIABLES -----------------------------------------
@@ -130,7 +130,7 @@ const experiment = new Promise(resolve => {
     type: 'instructions',
     pages: function () {
       const pageOne =
-        '<div style="font-size:20px;">We have finished with the practice trials.<br><br>We will now start with the main trials.<br>If you have not undertsood the task, please ask the Research Assistant.<br><br>Press "Next" to start the trials.<br><br></div>';
+        '<div style="font-size:20px;">We have finished with the practice trials.<br><br>We will now start with the main trials.<br>If you have not undertsood the task, please reach out to us before continuing.<br><br>Press "Next" to start the trials.<br><br></div>';
       return [pageOne];
     },
     allow_backward: false,
@@ -335,7 +335,7 @@ const experiment = new Promise(resolve => {
         { trial_type: 'spatial-span-recall' },
         { trial_type: 'symmetry-judgement-task' },
       ]);
-      await storeExperimentResults({
+      await storeTaskResults({
         task: 'symmetry_span',
         participantId,
         data: relevantData,

@@ -5,25 +5,25 @@ import {
   setQueryParams,
 } from './utils';
 
-export const experiments = [
+export const tasks = [
   {
     displayName: 'Digit Span Task',
     run: async () => {
-      const module = await import('../experiments/digit_span');
+      const module = await import('../tasks/digit_span');
       return module.default();
     },
   },
   {
     displayName: 'Symmetry Span Task',
     run: async () => {
-      const module = await import('../experiments/symmetry_span');
+      const module = await import('../tasks/symmetry_span');
       return module.default();
     },
   },
   {
     displayName: 'Demo Experiment',
     run: async () => {
-      const module = await import('../experiments/example');
+      const module = await import('../tasks/example');
       return module.default();
     },
   },
@@ -35,14 +35,13 @@ export const getParticipantId = () => {
   return participantId;
 };
 
-export const startExperiments = () => {
+export const startExperiment = () => {
   const participantId = getQueryParam('participantId') || generateUUID();
   setQueryParams({ participantId, currentStage: '1' });
-  window.location = ('experiments/' +
-    window.location.search) as unknown as Location;
+  window.location = ('tasks/' + window.location.search) as unknown as Location;
 };
 
-export const endExperiments = () => {
+export const endExperiment = () => {
   //resetQueryParams();
   window.location = '..' as unknown as Location;
 };
@@ -51,7 +50,7 @@ export const getExperimentState = () => {
   if (getQueryParam('done') === 'true') return 'done';
   if (
     getCurrentStage() < 1 ||
-    getCurrentStage() > experiments.length ||
+    getCurrentStage() > tasks.length ||
     !getQueryParam('participantId')
   )
     return 'invalid';
@@ -61,7 +60,7 @@ export const getExperimentState = () => {
 export const nextStage = () => {
   const currentStage = getCurrentStage();
   const nextStage = currentStage + 1;
-  const done = nextStage > experiments.length;
+  const done = nextStage > tasks.length;
   if (!done) {
     addQueryParams({ currentStage: nextStage.toString() });
   } else {
@@ -72,7 +71,7 @@ export const nextStage = () => {
 export const runCurrentExperiment = async () => {
   const currentStage = getCurrentStage();
   const i = currentStage - 1;
-  await experiments[i].run();
+  await tasks[i].run();
 };
 
 export const getCurrentStage = () => {
@@ -82,7 +81,7 @@ export const getCurrentStage = () => {
 
 export const getStageCompletionMessage = () => {
   const currentStage = getCurrentStage();
-  const totalStages = experiments.length;
+  const totalStages = tasks.length;
   if (currentStage === totalStages)
     return 'You have completed all stages of the experiment!';
   const remainingStages = totalStages - currentStage;

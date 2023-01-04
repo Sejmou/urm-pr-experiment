@@ -5,15 +5,15 @@ import { initJsPsych } from 'jspsych';
 import htmlKeyboardResponse from '@jspsych/plugin-html-keyboard-response';
 import imageKeyboardResponse from '@jspsych/plugin-image-keyboard-response';
 import jsPsychPreload from '@jspsych/plugin-preload';
-import { getParticipantId } from '../../shared/experiments';
-import { storeExperimentResults } from '../utils';
+import { getParticipantId } from '../../shared/experiment';
+import { storeTaskResults } from '../utils';
 
 const runExperiment = async () => {
   const participantId = getParticipantId();
   const jsPsych = initJsPsych({
     on_finish: async () => {
       const data = jsPsych.data.get();
-      await storeExperimentResults({
+      await storeTaskResults({
         participantId,
         task: 'example_task',
         data,

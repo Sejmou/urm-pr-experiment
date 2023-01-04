@@ -7,4 +7,4 @@ src/lib/jspsych-6.0.4/jspsych.js
 src/lib/jspsych-6.0.4/plugins/jspsych-fullscreen.js
 src/lib/jspsych-6.0.4/plugins/jspsych-instructions.js
 # Enable linting just for some files
-!src/experiments/*.js
+!src/tasks/*.js

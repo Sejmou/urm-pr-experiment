@@ -1,5 +1,5 @@
 import './Home.css';
-import { experiments, startExperiments } from './shared/experiments';
+import { tasks, startExperiment } from './shared/experiment';
 
 function Home() {
   return (
@@ -8,7 +8,7 @@ function Home() {
       <div className="card">
         <p>Welcome to our experiment. It consists of several stages:</p>
         <ol>
-          {experiments.map((p, i) => (
+          {tasks.map((p, i) => (
             <li key={i}>
               {p.displayName}
               {/* <a href={`./${p.path}/`}>{p.displayName}</a> */}
@@ -17,7 +17,7 @@ function Home() {
         </ol>
         <br />
         <p>Once you feel ready, click the button below to get started!</p>
-        <button onClick={startExperiments}>Start</button>
+        <button onClick={startExperiment}>Start</button>
       </div>
     </div>
   );

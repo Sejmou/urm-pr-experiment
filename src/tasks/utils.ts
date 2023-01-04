@@ -1,15 +1,13 @@
-import { JsPsychData } from 'jspsych/dist/modules/data';
 import { DataCollection } from 'jspsych/dist/modules/data/DataCollection';
-import { getStageCompletionMessage } from '../shared/experiments';
+import {
+  getCurrentStage,
+  getStageCompletionMessage,
+} from '../shared/experiment';
 import { uploadExperimentResults } from '../shared/firebase';
 
-function getResultsFilename(task: string, participantId: string) {
-  return `${task}_${participantId}_${Date.now()}.csv`;
-}
-
-const getStageCompletionMessageHTML = () => {
+function getStageCompletionMessageHTML() {
   return `<div>${getStageCompletionMessage()}</div>`;
-};
+}
 
 export function createConclusionMessageBlock() {
   return {
@@ -23,11 +21,11 @@ export function createConclusionMessageBlock() {
   };
 }
 
-export const storeExperimentResults = async (results: {
+export async function storeTaskResults(results: {
   participantId: string;
   task: string;
   data: DataCollection;
-}) => {
+}) {
   const { participantId, task, data } = results;
   const filename = getResultsFilename(task, participantId);
   data.localSave('csv', filename);
@@ -36,4 +34,8 @@ export const storeExperimentResults = async (results: {
   await uploadExperimentResults(filename, csvString);
   console.log('Uploaded results to Firebase as', filename);
   return;
-};
+}
+
+function getResultsFilename(experimentTask: string, participantId: string) {
+  return `${getCurrentStage()}_${experimentTask}_${participantId}_${Date.now()}.csv`;
+}

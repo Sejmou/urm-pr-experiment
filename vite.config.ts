@@ -16,7 +16,7 @@ export default defineConfig({
       input: {
         // https://vitejs.dev/guide/build.html#multi-page-app
         main: resolve(root, 'index.html'),
-        experiments: resolve(root, 'experiments/index.html'),
+        tasks: resolve(root, 'tasks/index.html'),
       },
     },
   },

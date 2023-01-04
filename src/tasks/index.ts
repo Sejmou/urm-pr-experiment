@@ -1,9 +1,9 @@
 import {
-  endExperiments,
+  endExperiment,
   getExperimentState,
   nextStage,
   runCurrentExperiment,
-} from '../shared/experiments';
+} from '../shared/experiment';
 
 async function main() {
   while (true) {
@@ -18,7 +18,7 @@ async function main() {
       break;
     }
   }
-  endExperiments();
+  endExperiment();
 }
 
 main();

@@ -26,7 +26,7 @@ import { createConclusionMessageBlock, storeTaskResults } from '../utils';
 const experiment = new Promise(resolve => {
   //----- CUSTOMIZABLE VARIABLES -----------------------------------------
 
-  var nTrials = 2; // number of trials in the test
+  var nTrials = 14; // number of trials in the test
   var minSetSize = 3; // starting digit length
   var stimuli_duration = 1000; // number of miliseconds to display each digit
   var recall_duration = null; // number of miliseconds to allow recall. If null, there is no time limit.

@@ -67,10 +67,10 @@ function Home() {
           ''
         )}
         <p>
-          It is very important that you follow the instructions above carefully!
+          It is very important that you follow these instructions carefully!
         </p>
         <Checkbox
-          label="I have understood and followed the instructions above."
+          label="I have understood the instructions above and set up my environment accordingly."
           value={checked}
           onChange={handleChange}
         />

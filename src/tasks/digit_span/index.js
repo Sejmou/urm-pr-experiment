@@ -30,7 +30,7 @@ const experiment = new Promise(resolve => {
   var minSetSize = 3; // starting digit length
   var stimuli_duration = 1000; // number of miliseconds to display each digit
   var recall_duration = null; // number of miliseconds to allow recall. If null, there is no time limit.
-  const debug = true; // set to true to skip demo procedure and show only two trials in test procedure (ignoring nTrials)
+  const debug = false; // set to true to skip demo procedure and show only two trials in test procedure (ignoring nTrials)
 
   //----------------------------------------------------------------------
 

@@ -130,7 +130,7 @@ const experiment = new Promise(resolve => {
     type: 'instructions',
     pages: function () {
       const pageOne =
-        '<div style="font-size:20px;">We have finished with the practice trials.<br><br>We will now start with the main trials.<br>If you have not undertsood the task, please reach out to us before continuing.<br><br>Press "Next" to start the trials.<br><br></div>';
+        '<div style="font-size:20px;">We have finished with the practice trials.<br><br>We will now start with the main trials.<br>If you have not understood the task, please reach out to us before continuing.<br><br>Press "Next" to start the trials.<br><br></div>';
       return [pageOne];
     },
     allow_backward: false,

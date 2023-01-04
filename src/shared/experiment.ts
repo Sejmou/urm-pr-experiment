@@ -20,13 +20,6 @@ export const tasks = [
       return module.default();
     },
   },
-  {
-    displayName: 'Demo Experiment',
-    run: async () => {
-      const module = await import('../tasks/example');
-      return module.default();
-    },
-  },
 ];
 
 export const getParticipantId = () => {

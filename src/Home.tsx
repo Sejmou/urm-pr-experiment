@@ -6,7 +6,7 @@ function Home() {
     <div className="App">
       <h1>URM PR Experiment</h1>
       <div className="card">
-        <p>Welcome to our experiment. It consists of several stages:</p>
+        <p>Welcome to our experiment. It consists of the following stages:</p>
         <ol>
           {tasks.map((p, i) => (
             <li key={i}>

@@ -30,13 +30,24 @@ export const getParticipantId = () => {
 
 export const startExperiment = () => {
   const participantId = getQueryParam('participantId') || generateUUID();
-  setQueryParams({ participantId, currentStage: '1' });
+  const params: { [key: string]: string } = {
+    participantId,
+    currentStage: '1',
+  };
+  if (isMusicTestGroup()) params.music = 'true';
+  setQueryParams(params);
   window.location = ('tasks/' + window.location.search) as unknown as Location;
+};
+
+export const isMusicTestGroup = () => {
+  return getQueryParam('music') !== null;
 };
 
 export const endExperiment = () => {
   //resetQueryParams();
-  window.location = '..' as unknown as Location;
+  window.location = ('..' + isMusicTestGroup
+    ? '/?music=true'
+    : '') as unknown as Location;
 };
 
 export const getExperimentState = () => {

@@ -21,7 +21,7 @@ export const experiments = [
     },
   },
   {
-    displayName: 'Experiment 1',
+    displayName: 'Demo Experiment',
     run: async () => {
       const module = await import('../experiments/example');
       return module.default();

@@ -22,3 +22,9 @@ or
 ```
 npm run dev
 ```
+
+## Downloading experiment results collected on Firebase (probably only works for me (Sejmou) as Firebase Project "owner")
+
+1. Download and install `gsutil` - instructions [here](https://cloud.google.com/storage/docs/gsutil_install)
+2. After installation, run `gcloud auth login` to log in (otherwise will get 401 Unauthorized error with following command)
+3. Run `gsutil -m cp -R gs://urm-pr-experiment.appspot.com/experiment_results/* ./data_analysis/data` to download the relevant CSV files from Firebase storage to `data_analysis/data`

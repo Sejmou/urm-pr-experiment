@@ -7,12 +7,7 @@ import '@lib/jspsych-6.0.4/plugins/jspsych-instructions.js';
 import '@lib/jspsych-6.0.4/plugins/jspsych-fullscreen.js';
 import '@lib/jspsych-6.0.4/css/jspsych_digitspan.css';
 import { getParticipantId } from '../../shared/experiments';
-import {
-  getResultsFilename,
-  createConclusionMessageBlock,
-  storeExperimentResults,
-} from '../utils';
-import { uploadExperimentResults } from '../../shared/firebase';
+import { createConclusionMessageBlock, storeExperimentResults } from '../utils';
 
 // This code has been adapted from https://github.com/mahiluthra/working_memory_tests/blob/c4700e7765833364d2c913667b99063afbaa2437/digit_span_task.html
 

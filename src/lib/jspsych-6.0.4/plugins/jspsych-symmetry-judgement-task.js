@@ -1,3 +1,6 @@
+import whiteBox from './img/whitebox.png';
+import blackBox from './img/blackbox.png';
+
 /*
  * Example plugin template
  */
@@ -167,7 +170,7 @@ jsPsych.plugins['symmetry-judgement-task'] = (function () {
 
     for (let i = 0; i < matrix.length; i++) {
       paper.innerHTML +=
-        '<img src="img/whitebox.png" style="position: absolute; top:' +
+        `<img src="${whiteBox}" style="position: absolute; top:` +
         matrix[i][0] * (trial.size_cells - 2) +
         'px; left:' +
         matrix[i][1] * (trial.size_cells - 2) +
@@ -180,7 +183,7 @@ jsPsych.plugins['symmetry-judgement-task'] = (function () {
 
     for (let i = 0; i < blackBoxesFinal.length; i++) {
       paper.innerHTML +=
-        '<img src="img/blackbox.png" style="position: absolute; top:' +
+        `<img src="${blackBox}" style="position: absolute; top:` +
         blackBoxesFinal[i][0] * (trial.size_cells - 2) +
         'px; left:' +
         blackBoxesFinal[i][1] * (trial.size_cells - 2) +

@@ -22,16 +22,24 @@ import '@lib/jspsych-6.0.4/css/jspsych_grid.css';
       For further details, please refer to the README.
   */
 
+import symm_instructions from './symm_instructions.png';
+import symmetrySpanExampleGrid from './symmetrySpanExampleGrid.png';
 import { getParticipantId } from '../../shared/experiments';
-import { storeExperimentResults } from '../utils';
+import { storeExperimentResults, createConclusionMessageBlock } from '../utils';
 
 const experiment = new Promise(resolve => {
   //----- CUSTOMIZABLE VARIABLES -----------------------------------------
-
+  const debug = true; // only single test trial, skipping demos
   let minSetSize = 3; // starting length of each trial (i.e., min number of letters in a trial)
   let maxSetSize = 5; // ending length of each trial (i.e., max number of letters in a trial)
   let repSet = 3; // number of times each set size should be repeated
   let randomize = true; // present different set sizes in random order. if false, set sizes will be presented in ascending order
+
+  if (debug) {
+    minSetSize = 3;
+    maxSetSize = 3;
+    repSet = 1;
+  }
 
   //----------------------------------------------------------------------
 
@@ -83,8 +91,7 @@ const experiment = new Promise(resolve => {
     pages: function () {
       const pageOne =
         '<div style="font-size:20px;"><b>INSTRUCTIONS</b><br><br><br>This is the symmetry span task. <br><br>This task has two parts: <br>(1) Square memorization <br>(2) Symmetry judgement<br><br><br></div>';
-      const pageTwo =
-        '<div style="font-size:20px;">We will first practice SQUARE MEMORIZATION.<br><br>You will see a grid of squares on the screen.<br>Several squares will turn red one at a time (around 3 to 6 in a trial).<br>Try to remember which squares turned red and the order in which they turned red.<br><br>Below is an example of the grid with one square colored red. <br><br> <img src="img/symmetrySpanExampleGrid.png" style="height:300px; width:400px"></img></div>';
+      const pageTwo = `<div style="font-size:20px;">We will first practice SQUARE MEMORIZATION.<br><br>You will see a grid of squares on the screen.<br>Several squares will turn red one at a time (around 3 to 6 in a trial).<br>Try to remember which squares turned red and the order in which they turned red.<br><br>Below is an example of the grid with one square colored red. <br><br> <img src="${symmetrySpanExampleGrid}" style="height:300px; width:400px"></img></div>`;
       const pageThree =
         '<div style="font-size:20px;">After this, you will be shown an empty grid.<br>Your task is to select the squares that turned red in their correct presentation order. <br><br>Use the mouse to select the appropriate squares. <br>If you make a mistake use the provided "Backspace" button to clear your last response. <br><br>Remember, it is important that you select the squares in the order that you saw them.<br> So if you forget one of the squares, guess the best you can for that one, and select the rest in their correct order.<br><br>Press "Next" for practice trials.<br><br></div>';
       return [pageOne, pageTwo, pageThree];
@@ -97,8 +104,7 @@ const experiment = new Promise(resolve => {
   var instructions2 = {
     type: 'instructions',
     pages: function () {
-      const pageOne =
-        '<div style="font-size:20px;">We will now practice SYMMETRY JUDGEMENTS.<br><br>A black and white picture will appear on the screen and you have to judge if the picture is symmetrical or asymetrical.<br>A picture is symmetrical if its left half is identical to the right half when flipped.<br>Below are examples of symmetrical and asymetrical pictures:<br> <img src="img/symm_instructions.png" style="height:300px; width:450px"></img><br><br>Please ask the Research Assistant if you have not understood the difference between the symmetrical and asymetrical pictures.<br>Press "Next" to start practicing symmetry judgements.</div>';
+      const pageOne = `<div style="font-size:20px;">We will now practice SYMMETRY JUDGEMENTS.<br><br>A black and white picture will appear on the screen and you have to judge if the picture is symmetrical or asymetrical.<br>A picture is symmetrical if its left half is identical to the right half when flipped.<br>Below are examples of symmetrical and asymetrical pictures:<br> <img src="${symm_instructions}" style="height:300px; width:450px"></img><br><br>Please reach out to us if you have not understood the difference between the symmetrical and asymetrical pictures.<br>Press "Next" to start practicing symmetry judgements.</div>`;
       return [pageOne];
     },
     allow_backward: false,
@@ -263,13 +269,7 @@ const experiment = new Promise(resolve => {
     trial_duration: 1000,
   };
 
-  var conclusion = {
-    type: 'html-keyboard-response',
-    stimulus: function () {
-      return '<div style="font-size:20px;">This task is over.<br><br>Thank you for your participation in this task. <br><br>Please tell the Research Assistant that you have completed the task..</div>';
-    },
-    choices: jsPsych.NO_KEYS,
-  };
+  const conclusion = createConclusionMessageBlock();
 
   const participantId = getParticipantId();
 
@@ -308,16 +308,20 @@ const experiment = new Promise(resolve => {
     type: 'fullscreen',
     fullscreen_mode: true,
   });
-  timeline = timeline.concat([
-    instructions,
-    squaresDemo,
-    instructions2,
-    symmetryDemo,
-    instructions3,
-    fullDemo,
-    instructions4,
-    test_procedure,
-  ]);
+  timeline = timeline.concat(
+    !debug
+      ? [
+          instructions,
+          squaresDemo,
+          instructions2,
+          symmetryDemo,
+          instructions3,
+          fullDemo,
+          instructions4,
+          test_procedure,
+        ]
+      : [instructions4, test_procedure]
+  );
   timeline.push({
     type: 'fullscreen',
     fullscreen_mode: false,
@@ -327,12 +331,10 @@ const experiment = new Promise(resolve => {
   jsPsych.init({
     timeline: timeline,
     on_finish: async function (data) {
-      const relevantData = data
-        .get()
-        .filter([
-          { trial_type: 'spatial-span-recall' },
-          { trial_type: 'symmetry-judgement-task' },
-        ]);
+      const relevantData = data.filter([
+        { trial_type: 'spatial-span-recall' },
+        { trial_type: 'symmetry-judgement-task' },
+      ]);
       await storeExperimentResults({
         task: 'symmetry_span',
         participantId,

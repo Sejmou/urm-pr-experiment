@@ -8,6 +8,13 @@ import { storeExperimentStart, storeExperimentCompletion } from './firebase';
 
 export const tasks = [
   {
+    displayName: 'Stroop Test',
+    run: async () => {
+      const module = await import('../tasks/stroop');
+      return module.default();
+    },
+  },
+  {
     displayName: 'Digit Span Task',
     run: async () => {
       const module = await import('../tasks/digit_span');

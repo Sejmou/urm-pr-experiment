@@ -18,7 +18,7 @@ async function main() {
       break;
     }
   }
-  endExperiment();
+  await endExperiment();
 }
 
 main();

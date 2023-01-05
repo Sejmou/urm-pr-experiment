@@ -4,6 +4,7 @@ import {
   getQueryParam,
   setQueryParams,
 } from './utils';
+import { storeExperimentStart, storeExperimentCompletion } from './firebase';
 
 export const tasks = [
   {
@@ -13,13 +14,13 @@ export const tasks = [
       return module.default();
     },
   },
-  {
-    displayName: 'Symmetry Span Task',
-    run: async () => {
-      const module = await import('../tasks/symmetry_span');
-      return module.default();
-    },
-  },
+  // {
+  //   displayName: 'Symmetry Span Task',
+  //   run: async () => {
+  //     const module = await import('../tasks/symmetry_span');
+  //     return module.default();
+  //   },
+  // },
 ];
 
 export const getParticipantId = () => {
@@ -28,8 +29,12 @@ export const getParticipantId = () => {
   return participantId;
 };
 
-export const startExperiment = () => {
+export const startExperiment = async () => {
   const participantId = getQueryParam('participantId') || generateUUID();
+  await storeExperimentStart(
+    participantId,
+    isMusicTestGroup() ? 'music' : 'silence'
+  );
   const params: { [key: string]: string } = {
     participantId,
     currentStage: '1',
@@ -43,11 +48,13 @@ export const isMusicTestGroup = () => {
   return getQueryParam('music') !== null;
 };
 
-export const endExperiment = () => {
-  //resetQueryParams();
-  window.location = ('..' + isMusicTestGroup
-    ? '/?music=true'
-    : '') as unknown as Location;
+export const endExperiment = async () => {
+  await storeExperimentCompletion(
+    getParticipantId(),
+    isMusicTestGroup() ? 'music' : 'silence'
+  );
+  window.location = ('..' +
+    (isMusicTestGroup() ? '/?music=true' : '')) as unknown as Location;
 };
 
 export const getExperimentState = () => {
@@ -87,7 +94,7 @@ export const getStageCompletionMessage = () => {
   const currentStage = getCurrentStage();
   const totalStages = tasks.length;
   if (currentStage === totalStages)
-    return 'You have completed all stages of the experiment!';
+    return 'You have completed all stages of the experiment!\nClick the button below to finish.';
   const remainingStages = totalStages - currentStage;
   return `You have completed stage ${currentStage} of ${totalStages}. Only ${remainingStages} more stage${
     remainingStages == 1 ? '' : 's'

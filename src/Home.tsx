@@ -18,9 +18,8 @@ const Checkbox = ({ label, value, onChange }: CheckboxProps) => {
   );
 };
 
-const musicTestGroup = isMusicTestGroup();
-
 function Home() {
+  const musicTestGroup = isMusicTestGroup();
   const [checked, setChecked] = useState(false);
   const handleChange = () => {
     setChecked(!checked);

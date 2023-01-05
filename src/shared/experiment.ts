@@ -14,13 +14,13 @@ export const tasks = [
       return module.default();
     },
   },
-  // {
-  //   displayName: 'Symmetry Span Task',
-  //   run: async () => {
-  //     const module = await import('../tasks/symmetry_span');
-  //     return module.default();
-  //   },
-  // },
+  {
+    displayName: 'Symmetry Span Task',
+    run: async () => {
+      const module = await import('../tasks/symmetry_span');
+      return module.default();
+    },
+  },
 ];
 
 export const getParticipantId = () => {

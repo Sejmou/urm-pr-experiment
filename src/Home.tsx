@@ -2,62 +2,6 @@ import './Home.css';
 import { tasks, startExperiment } from './shared/experiment';
 import { useState } from 'react';
 import { isMusicTestGroup } from './shared/experiment';
-import { getParticipants, ParticipantData } from './shared/firebase';
-
-async function logParticipantStats() {
-  const [startedMusic, startedSilence, completedMusic, completedSilence] =
-    await Promise.all([
-      getParticipants('started', 'music'),
-      getParticipants('started', 'silence'),
-      getParticipants('completed', 'music'),
-      getParticipants('completed', 'silence'),
-    ]);
-  const data = {
-    music: { started: startedMusic, completed: completedMusic },
-    silence: { started: startedSilence, completed: completedSilence },
-  };
-
-  console.log(data);
-
-  const getUnfinished = (data: {
-    started: ParticipantData[];
-    completed: ParticipantData[];
-  }) => {
-    const { started, completed } = data;
-    return started.filter(
-      s => !completed.find(c => c.participantId === s.participantId)
-    );
-  };
-
-  const getStartedWithinGivenMinutes = (
-    data: ParticipantData[],
-    minutes: number
-  ) => data.filter(d => d.timestamp > Date.now() - minutes * 60 * 1000);
-
-  const getInProgress = (data: {
-    started: ParticipantData[];
-    completed: ParticipantData[];
-  }) => {
-    const unfinished = getUnfinished(data);
-    const inProgress = getStartedWithinGivenMinutes(unfinished, 20);
-    return inProgress;
-  };
-
-  const stats = {
-    music: {
-      completed: data.music.completed.length,
-      inProgress: getInProgress(data.music).length,
-    },
-    silence: {
-      completed: data.silence.completed.length,
-      inProgress: getInProgress(data.silence).length,
-    },
-  };
-
-  console.log('stats', stats);
-}
-
-logParticipantStats();
 
 type CheckboxProps = {
   label: string;

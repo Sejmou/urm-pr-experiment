@@ -26,63 +26,68 @@ function Home() {
   };
 
   return (
-    <div className="App">
-      <h1>Super Awesome Experiment</h1>
-      <div className="card">
-        <p>
-          Welcome to our experiment! Thank you for taking the time to
-          participate in it. You should be done after roughly 15 minutes. The
-          experiment consists of the following stages:
-        </p>
-        <ol>
-          {tasks.map((p, i) => (
-            <li key={i}>
-              {p.displayName}
-              {/* <a href={`./${p.path}/`}>{p.displayName}</a> */}
-            </li>
-          ))}
-        </ol>
-        <p>
-          Make sure you are in a quiet environment without any distractions. We
-          will only collect anonymized performance data, no results will be
-          traceable back to you.
-        </p>
-        {musicTestGroup ? (
-          <>
-            <p>
-              Below is a link to a music playlist. Click it and make sure you
-              can hear the music clearly, then return to this screen. You should
-              keep the music playing for the whole experiment.
-            </p>
-            <a
-              className="music-link"
-              href="https://youtu.be/CLeZyIID9Bo"
-              target="_blank"
-            >
-              Chill music
-            </a>
-          </>
-        ) : (
-          ''
-        )}
-        <p>
-          It is very important that you follow these instructions carefully!
-        </p>
-        <Checkbox
-          label="I have understood the instructions above and set up my environment accordingly."
-          value={checked}
-          onChange={handleChange}
-        />
-        <p>Once you feel ready, click the button below to get started!</p>
-        <button
-          className="center"
-          disabled={!checked}
-          onClick={startExperiment}
-        >
-          Start
-        </button>
+    <>
+      <div className="App">
+        <h1>Super Awesome Experiment</h1>
+        <div className="card">
+          <p>
+            Welcome to our experiment! Thank you for taking the time to
+            participate in it. You should be done after roughly 15 minutes. The
+            experiment consists of the following stages:
+          </p>
+          <ol>
+            {tasks.map((p, i) => (
+              <li key={i}>
+                {p.displayName}
+                {/* <a href={`./${p.path}/`}>{p.displayName}</a> */}
+              </li>
+            ))}
+          </ol>
+          <p>
+            Make sure you are in a quiet environment without any distractions.
+            We will only collect anonymized performance data, no results will be
+            traceable back to you.
+          </p>
+          {musicTestGroup ? (
+            <>
+              <p>
+                Below is a link to a music playlist. Click it and make sure you
+                can hear the music clearly, then return to this screen. You
+                should keep the music playing for the whole experiment.
+              </p>
+              <a
+                className="music-link"
+                href="https://youtu.be/CLeZyIID9Bo"
+                target="_blank"
+              >
+                Chill music
+              </a>
+            </>
+          ) : (
+            ''
+          )}
+          <p>
+            It is very important that you follow these instructions carefully!
+          </p>
+          <Checkbox
+            label="I have understood the instructions above and set up my environment accordingly."
+            value={checked}
+            onChange={handleChange}
+          />
+          <p>Once you feel ready, click the button below to get started!</p>
+          <button
+            className="center"
+            disabled={!checked}
+            onClick={startExperiment}
+          >
+            Start
+          </button>
+        </div>
       </div>
-    </div>
+      <a className="about-link" href="/about/">
+        About
+      </a>
+    </>
   );
 }
 

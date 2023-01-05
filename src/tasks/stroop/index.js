@@ -9,11 +9,8 @@ import { getParticipantId } from '../../shared/experiment';
 import { createConclusionMessageBlock, storeTaskResults } from '../utils';
 
 // CONFIG
-var FullScreenMode = false;
-
 var ColorWordInstrText = [
-  '<p>Welcome to the Stroop Color/Word experiment.</p>',
-  '<p>In this task, words will appear in the center of the screen. You need to indicate the COLOR that the word is written in (and ignore what the word says). Press the key that corresponds to that color, as shown in the figure. This figure will be present during the entire experiment.</p><img src="' +
+  '<p>Welcome to the Stroop Color/Word experiment.</p><p>In this task, words will appear in the center of the screen.</p><p>You need to indicate the color that the word is written in (and ignore what the word says).</p><p>Press the key that corresponds to that color, as shown in the figure. This figure will be present during the entire experiment.</p><img src="' +
     keyboard_path +
     '"></img>',
   '<p>Before doing the actual experiment you will complete some practice trials. These will give you feedback about your accuracy. <p>Remember to respond as accurately and quickly as possible.</p>',
@@ -35,10 +32,10 @@ var FeedbackLength = 400; // This is in milliseconds
 
 //var FixationLength = 500; // This is in milliseconds
 
-var ColorWordPracticeRepeats = 2;
+var ColorWordPracticeRepeats = 1;
 
 // Since there are 16 possible trials, the number of trials will be 4 times the number of repeats
-var ColorWordTestRepeats = 4;
+var ColorWordTestRepeats = 5;
 
 /* ========================================================= 
 	This is a function for positioning the instruction figure and stimuli on the screen
@@ -181,18 +178,15 @@ const experiment = new Promise(resolve => {
 
   /* create timeline */
   var timeline = [];
-  // Make experiment run in full screen mode
-  // Note, that the fullscreen plugin needs to imported above
   timeline.push({
     type: 'fullscreen',
-    fullscreen_mode: FullScreenMode,
+    fullscreen_mode: true,
   });
 
-  /* Create the initial welcome and instructions for practice.
-This uses the built in instructions module. Make sure it gets imported above */
   var ColorWordInstr = {
     type: 'instructions',
     pages: ColorWordInstrText,
+    allow_backward: false,
     show_clickable_nav: true,
   };
   /* After practice is completed the performance is being checked. If accuracy is below 50% then the practice is repeated.
@@ -200,12 +194,14 @@ This uses the built in instructions module. Make sure it gets imported above */
   var ColorWordPoorPerfInstr = {
     type: 'instructions',
     pages: ColorWordInstrPoorPerformanceText,
+    allow_backward: false,
     show_clickable_nav: true,
   };
   /* Instructions shown to participants before test trials begin. */
   var ColorWordTestInstr = {
     type: 'instructions',
     pages: ColorWordTestInstrText,
+    allow_backward: false,
     show_clickable_nav: true,
   };
 
@@ -371,12 +367,14 @@ This uses the built in instructions module. Make sure it gets imported above */
   timeline.push(debrief);
   // decide if the person did well enough
   timeline.push(if_node);
-  // decide if the person did well enough
-  timeline.push(if_node);
   // Present test instructions
   timeline.push(ColorWordTestInstr);
   // run the test
   timeline.push(test_procedure);
+  timeline.push({
+    type: 'fullscreen',
+    fullscreen_mode: false,
+  });
   timeline.push(conclusion);
 
   /* start the experiment */
@@ -388,10 +386,11 @@ This uses the built in instructions module. Make sure it gets imported above */
       console.log(JSON.stringify(data));
     },
     on_finish: async function (data) {
+      const relevantData = data.filter({ type: 'test trial' });
       await storeTaskResults({
         task: 'stroop',
         participantId,
-        data,
+        data: relevantData,
       });
       resolve();
     },

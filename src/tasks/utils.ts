@@ -3,6 +3,7 @@ import {
   getCurrentStage,
   getStageCompletionMessage,
   isMusicTestGroup,
+  testMode,
 } from '../shared/experiment';
 import { uploadExperimentTaskResults } from '../shared/firebase';
 import seedrandom from 'seedrandom';
@@ -31,12 +32,14 @@ export async function storeTaskResults(results: {
   const { participantId, task, data } = results;
   const filename = getResultsFilename(task, participantId);
 
-  // data.localSave('csv', filename);
-  //console.log('Saved results locally as', filename);
-
-  const csvString = data.csv();
-  await uploadExperimentTaskResults(filename, csvString);
-  console.log('Uploaded results to Firebase cloud storage as', filename);
+  if (testMode) {
+    data.localSave('csv', filename);
+    console.log('Saved results locally as', filename);
+  } else {
+    const csvString = data.csv();
+    await uploadExperimentTaskResults(filename, csvString);
+    console.log('Uploaded results to Firebase cloud storage as', filename);
+  }
   return;
 }
 

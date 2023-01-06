@@ -4,7 +4,13 @@ import {
   getQueryParam,
   setQueryParams,
 } from './utils';
-import { storeExperimentStart, storeExperimentCompletion } from './firebase';
+import {
+  storeExperimentStart,
+  storeExperimentCompletion,
+  storeMailingListParticipant,
+} from './firebase';
+
+export const testMode = false;
 
 export const tasks = [
   {
@@ -36,12 +42,17 @@ export const getParticipantId = () => {
   return participantId;
 };
 
-export const startExperiment = async () => {
+export const startExperiment = async (email?: string) => {
   const participantId = getQueryParam('participantId') || generateUUID();
-  await storeExperimentStart(
-    participantId,
-    isMusicTestGroup() ? 'music' : 'silence'
-  );
+  if (!testMode) {
+    await storeExperimentStart(
+      participantId,
+      isMusicTestGroup() ? 'music' : 'silence'
+    );
+  }
+  if (email) {
+    await storeMailingListParticipant(participantId, email);
+  }
   const params: { [key: string]: string } = {
     participantId,
     currentStage: '1',
@@ -56,10 +67,12 @@ export const isMusicTestGroup = () => {
 };
 
 export const endExperiment = async () => {
-  await storeExperimentCompletion(
-    getParticipantId(),
-    isMusicTestGroup() ? 'music' : 'silence'
-  );
+  if (!testMode) {
+    await storeExperimentCompletion(
+      getParticipantId(),
+      isMusicTestGroup() ? 'music' : 'silence'
+    );
+  }
   window.location = ('..' +
     (isMusicTestGroup() ? '/?music=true' : '')) as unknown as Location;
 };

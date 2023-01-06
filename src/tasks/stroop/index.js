@@ -10,7 +10,7 @@ import { createConclusionMessageBlock, storeTaskResults } from '../utils';
 
 // CONFIG
 var ColorWordInstrText = [
-  '<p>Welcome to the Stroop Color/Word experiment.</p><p>In this task, words will appear in the center of the screen.</p><p>You need to indicate the color that the word is written in (and ignore what the word says).</p><p>Press the key that corresponds to that color, as shown in the figure. This figure will be present during the entire experiment.</p><img src="' +
+  '<p>Welcome to the Stroop Color/Word experiment.</p><p>In this task, words will appear in the center of the screen.</p><p>You need to indicate the color that the word is written in (and ignore what the word says).</p><p>Press the key on your keyboard that corresponds to that color, as shown in the figure. This figure will be present during the entire experiment.</p><img src="' +
     keyboard_path +
     '"></img>',
   '<p>Before doing the actual experiment you will complete some practice trials. These will give you feedback about your accuracy. <p>Remember to respond as accurately and quickly as possible.</p>',

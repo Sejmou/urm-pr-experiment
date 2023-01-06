@@ -100,3 +100,17 @@ export async function storeExperimentCompletion(
     group
   );
 }
+
+export async function storeMailingListParticipant(
+  participantId: string,
+  email: string
+) {
+  const ref = dbRef(db, `mailing_list`);
+  console.log('Storing mailing list participant', participantId, email);
+  const stateInfoRef = push(ref);
+  const participantIdAndEmail = {
+    participantId,
+    email,
+  };
+  await set(stateInfoRef, participantIdAndEmail);
+}

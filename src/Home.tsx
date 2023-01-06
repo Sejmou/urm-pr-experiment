@@ -21,8 +21,15 @@ const Checkbox = ({ label, value, onChange }: CheckboxProps) => {
 function Home() {
   const musicTestGroup = isMusicTestGroup();
   const [checked, setChecked] = useState(false);
+  const [email, setEmail] = useState('');
   const handleChange = () => {
     setChecked(!checked);
+  };
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+  const handleStartClick = () => {
+    startExperiment(email);
   };
 
   return (
@@ -80,11 +87,24 @@ function Home() {
             value={checked}
             onChange={handleChange}
           />
+          <p>
+            In case you are interested in your results or outcomes of this
+            experiment in general, feel free to enter your email below. We might
+            reach out to you with the results once the experiment is over. You
+            can also leave the field empty, then you are 100% anonymous.
+          </p>
+          <input
+            className="email-input"
+            type="email"
+            placeholder="Your email"
+            value={email}
+            onChange={handleEmailChange}
+          />
           <p>Once you feel ready, click the button below to get started!</p>
           <button
             className="center"
             disabled={!checked}
-            onClick={startExperiment}
+            onClick={handleStartClick}
           >
             Start
           </button>

@@ -63,7 +63,7 @@ function Home() {
               </p>
               <a
                 className="music-link"
-                href="https://youtu.be/CLeZyIID9Bo"
+                href="https://youtu.be/CLeZyIID9Bo?t=1"
                 target="_blank"
               >
                 Chill music

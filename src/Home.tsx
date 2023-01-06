@@ -55,6 +55,12 @@ function Home() {
                 can hear the music clearly, then return to this screen. You
                 should keep the music playing for the whole experiment.
               </p>
+              <p>
+                Please,{' '}
+                <b>
+                  do not start the experiment if you can't listen to the music!
+                </b>
+              </p>
               <a
                 className="music-link"
                 href="https://youtu.be/CLeZyIID9Bo"

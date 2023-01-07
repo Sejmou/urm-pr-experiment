@@ -35,6 +35,7 @@ jsPsych.plugins['symmetry-judgement-task'] = (function () {
         default_value: undefined,
       },
       proportion: {
+        // IIUC, this controls the probability of symmetric cells?! or is it the proportion of asymmetric trials overall?
         type: jsPsych.plugins.parameterType.FLOAT,
         default: 0.5,
       },

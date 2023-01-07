@@ -143,15 +143,19 @@ const experiment = new Promise(resolve => {
     type: 'symmetry-judgement-task',
     size: 8,
     trial_duration: null,
-    number_darkened: [17, 18, 19],
+    number_darkened: [17, 18, 19], // how many grid cells should be black (rest is white) - values picked randomly from this list
     stimulus: 'Is this image symmetric?',
     proportion: function () {
+      // the proportion parameter controls the proportion of trials that are symmetric, i.e. the probability for a symmetric trial
       nProportionDemo += 1;
       if (nProportionDemo == 1) {
+        // show a symmetric trial
         return 1;
       } else if (nProportionDemo == 2) {
+        // show an asymmetric trial
         return 0;
       } else {
+        // equal probability of symmetric and asymmetric trials
         return 0.5;
       }
     },

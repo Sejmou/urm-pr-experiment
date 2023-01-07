@@ -14,22 +14,25 @@ const firebaseConfig = {
   measurementId: 'G-HZVMQ67M9R',
 };
 
-const app = initializeApp(firebaseConfig);
-const storage = getStorage(app);
+export const firebaseActive = false; // hacky way to disable firebase for local development
+
+const app = firebaseActive ? initializeApp(firebaseConfig) : null;
+const storage = app ? getStorage(app) : null;
+const db = app ? getDatabase(app) : null;
 
 export async function uploadExperimentTaskResults(
   filename: string,
   csvString: string
 ) {
+  if (!storage) return;
   const file = new File([csvString], filename, { type: 'text/csv' });
   await uploadBytes(
     storageRef(storage, `experiment_results/${filename}`),
     file
   );
+  console.log('Uploaded results to Firebase cloud storage as', filename);
   return;
 }
-
-const db = getDatabase(app);
 
 const experimentGroups = {
   music: 'music',
@@ -52,6 +55,18 @@ export async function getParticipants(
   state: ExperimentState,
   group: ExperimentGroup
 ) {
+  if (!db) {
+    // return some dummy data
+    if (state === experimentStates.completed) return [];
+    if (group === experimentGroups.silence) return [];
+    const data: ParticipantData[] = [
+      {
+        participantId: 'dummy',
+        timestamp: Date.now(),
+      },
+    ];
+    return data;
+  }
   const ref = dbRef(db, `${state}/${group}`);
   const res = await get(ref);
   const val = res.val();
@@ -66,6 +81,7 @@ async function storeExperimentStateUpdate(
   group: ExperimentGroup
 ) {
   try {
+    if (!db) return;
     const groupRef = dbRef(db, `${state}/${group}`);
     console.log('Storing experiment state update', state, group, participantId);
     const stateInfoRef = push(groupRef);
@@ -105,6 +121,7 @@ export async function storeMailingListParticipant(
   participantId: string,
   email: string
 ) {
+  if (!db) return;
   const ref = dbRef(db, `mailing_list`);
   console.log('Storing mailing list participant', participantId, email);
   const stateInfoRef = push(ref);

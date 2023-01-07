@@ -3,10 +3,10 @@ import {
   getCurrentStage,
   getStageCompletionMessage,
   isMusicTestGroup,
-  testMode,
 } from '../shared/experiment';
 import { uploadExperimentTaskResults } from '../shared/firebase';
 import seedrandom from 'seedrandom';
+import { firebaseActive } from '../shared/firebase';
 
 function getStageCompletionMessageHTML() {
   return `<div>${getStageCompletionMessage().split('\n').join('<br>')}</div>`;
@@ -32,13 +32,12 @@ export async function storeTaskResults(results: {
   const { participantId, task, data } = results;
   const filename = getResultsFilename(task, participantId);
 
-  if (testMode) {
-    data.localSave('csv', filename);
-    console.log('Saved results locally as', filename);
-  } else {
+  if (firebaseActive) {
     const csvString = data.csv();
     await uploadExperimentTaskResults(filename, csvString);
-    console.log('Uploaded results to Firebase cloud storage as', filename);
+  } else {
+    data.localSave('csv', filename);
+    console.log('Saved results locally as', filename);
   }
   return;
 }

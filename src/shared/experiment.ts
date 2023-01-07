@@ -10,8 +10,6 @@ import {
   storeMailingListParticipant,
 } from './firebase';
 
-export const testMode = false;
-
 export const tasks = [
   {
     displayName: 'Stroop Test',
@@ -44,12 +42,10 @@ export const getParticipantId = () => {
 
 export const startExperiment = async (email?: string) => {
   const participantId = getQueryParam('participantId') || generateUUID();
-  if (!testMode) {
-    await storeExperimentStart(
-      participantId,
-      isMusicTestGroup() ? 'music' : 'silence'
-    );
-  }
+  await storeExperimentStart(
+    participantId,
+    isMusicTestGroup() ? 'music' : 'silence'
+  );
   if (email) {
     await storeMailingListParticipant(participantId, email);
   }
@@ -67,12 +63,10 @@ export const isMusicTestGroup = () => {
 };
 
 export const endExperiment = async () => {
-  if (!testMode) {
-    await storeExperimentCompletion(
-      getParticipantId(),
-      isMusicTestGroup() ? 'music' : 'silence'
-    );
-  }
+  await storeExperimentCompletion(
+    getParticipantId(),
+    isMusicTestGroup() ? 'music' : 'silence'
+  );
   window.location = ('..' +
     (isMusicTestGroup() ? '/?music=true' : '')) as unknown as Location;
 };

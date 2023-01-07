@@ -53,8 +53,9 @@ function Home() {
           <p>
             <b>
               Please make sure you are in a quiet environment without any
-              distractions. A keyboard is required to complete the experiment,
-              so unfortunately you cannot participate with your mobile phone.
+              distractions.
+              <br />A keyboard is required to complete the experiment, so
+              unfortunately you cannot participate with your mobile phone.
             </b>
           </p>
           {musicTestGroup ? (

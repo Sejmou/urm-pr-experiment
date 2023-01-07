@@ -51,9 +51,11 @@ function Home() {
             ))}
           </ol>
           <p>
-            Make sure you are in a quiet environment without any distractions.
-            We will only collect anonymized performance data, no results will be
-            traceable back to you.
+            <b>
+              Please make sure you are in a quiet environment without any
+              distractions. A keyboard is required to complete the experiment,
+              so unfortunately you cannot participate with your mobile phone.
+            </b>
           </p>
           {musicTestGroup ? (
             <>
@@ -62,12 +64,6 @@ function Home() {
                 can hear the music clearly, then return to this screen. You
                 should keep the music playing for the whole experiment.
               </p>
-              <p>
-                Please,{' '}
-                <b>
-                  do not start the experiment if you can't listen to the music!
-                </b>
-              </p>
               <a
                 className="music-link"
                 href="https://youtu.be/CLeZyIID9Bo?t=1"
@@ -75,30 +71,38 @@ function Home() {
               >
                 Chill music
               </a>
+              <p>
+                Please,{' '}
+                <b>
+                  do not start the experiment if you can't listen to the music!
+                </b>
+              </p>
             </>
           ) : (
             ''
           )}
           <p>
-            It is very important that you follow these instructions carefully!
+            In case you are interested in your results or outcomes of this
+            experiment in general, feel free to enter your email below. We might
+            reach out to you with the results once the experiment is over. You
+            can also leave the field empty, then you are 100% anonymous and only
+            data about your task performance is collected.
+          </p>
+          <input
+            className="email-input"
+            type="email"
+            placeholder="Your email (optional)"
+            value={email}
+            onChange={handleEmailChange}
+          />
+          <p>
+            It is very important that you follow the instructions above
+            carefully!
           </p>
           <Checkbox
             label="I have understood the instructions above and set up my environment accordingly."
             value={checked}
             onChange={handleChange}
-          />
-          <p>
-            In case you are interested in your results or outcomes of this
-            experiment in general, feel free to enter your email below. We might
-            reach out to you with the results once the experiment is over. You
-            can also leave the field empty, then you are 100% anonymous.
-          </p>
-          <input
-            className="email-input"
-            type="email"
-            placeholder="Your email"
-            value={email}
-            onChange={handleEmailChange}
           />
           <p>Once you feel ready, click the button below to get started!</p>
           <button

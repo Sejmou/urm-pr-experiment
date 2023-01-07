@@ -318,7 +318,7 @@ const experiment = new Promise(resolve => {
           instructions3,
           fullDemo,
           instructions4,
-          test_procedure,
+          // test_procedure,
         ]
       : [instructions4, test_procedure]
   );

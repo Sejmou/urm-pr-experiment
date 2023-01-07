@@ -311,14 +311,14 @@ const experiment = new Promise(resolve => {
   timeline = timeline.concat(
     !debug
       ? [
-          instructions,
-          squaresDemo,
-          instructions2,
-          symmetryDemo,
-          instructions3,
-          fullDemo,
-          instructions4,
-          // test_procedure,
+          // instructions,
+          // squaresDemo,
+          // instructions2,
+          // symmetryDemo,
+          // instructions3,
+          // fullDemo,
+          // instructions4,
+          test_procedure,
         ]
       : [instructions4, test_procedure]
   );

@@ -32,7 +32,7 @@ const experiment = new Promise(resolve => {
   const debug = false; // only single test trial, skipping demos
   let minSetSize = 3; // starting length of each trial (i.e., min number of letters in a trial)
   let maxSetSize = 5; // ending length of each trial (i.e., max number of letters in a trial)
-  let repSet = 3; // number of times each set size should be repeated
+  let repSet = 1; // number of times each set size should be repeated
   let randomize = true; // present different set sizes in random order. if false, set sizes will be presented in ascending order
 
   if (debug) {

@@ -35,7 +35,7 @@ var FeedbackLength = 400; // This is in milliseconds
 var ColorWordPracticeRepeats = 1;
 
 // Since there are 16 possible trials, the number of trials will be 4 times the number of repeats
-var ColorWordTestRepeats = 5;
+var ColorWordTestRepeats = 2;
 
 /* ========================================================= 
 	This is a function for positioning the instruction figure and stimuli on the screen

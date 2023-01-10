@@ -38,6 +38,16 @@ function Home() {
         <h1>Super Awesome Experiment</h1>
         <div className="card">
           <p>
+            <b>
+              Note: This is a demo page for our{' '}
+              <a href="https://urm-pr-experiment.vercel.app/">
+                actual experiment
+              </a>
+              with a smaller number of test runs in experiments. The collected
+              data is also stored locally instead of in a database.
+            </b>
+          </p>
+          <p>
             Welcome to our experiment! Thank you for taking the time to
             participate in it. You should be done after roughly 15 minutes. The
             experiment consists of the following stages:

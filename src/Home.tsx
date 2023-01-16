@@ -1,7 +1,6 @@
 import './Home.css';
 import { tasks, startExperiment } from './shared/experiment';
 import { useState } from 'react';
-import { isMusicTestGroup } from './shared/experiment';
 
 type CheckboxProps = {
   label: string;
@@ -19,7 +18,7 @@ const Checkbox = ({ label, value, onChange }: CheckboxProps) => {
 };
 
 function Home() {
-  const musicTestGroup = isMusicTestGroup();
+  const musicTestGroup = true;
   const [checked, setChecked] = useState(false);
   const [email, setEmail] = useState('');
   const handleChange = () => {

@@ -36,8 +36,8 @@ export async function storeTaskResults(results: {
     const csvString = data.csv();
     await uploadExperimentTaskResults(filename, csvString);
   } else {
-    data.localSave('csv', filename);
-    console.log('Saved results locally as', filename);
+    // data.localSave('csv', filename);
+    // console.log('Saved results locally as', filename);
   }
   return;
 }

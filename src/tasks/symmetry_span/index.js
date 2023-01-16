@@ -29,17 +29,10 @@ import { storeTaskResults, createConclusionMessageBlock } from '../utils';
 
 const experiment = new Promise(resolve => {
   //----- CUSTOMIZABLE VARIABLES -----------------------------------------
-  const debug = false; // only single test trial, skipping demos
   let minSetSize = 3; // starting length of each trial (i.e., min number of letters in a trial)
   let maxSetSize = 5; // ending length of each trial (i.e., max number of letters in a trial)
   let repSet = 1; // number of times each set size should be repeated
   let randomize = true; // present different set sizes in random order. if false, set sizes will be presented in ascending order
-
-  if (debug) {
-    minSetSize = 3;
-    maxSetSize = 3;
-    repSet = 1;
-  }
 
   //----------------------------------------------------------------------
 
@@ -86,51 +79,11 @@ const experiment = new Promise(resolve => {
   var nSymmetryAcc = 0; //feedback
   var nSquaresRecalled = 0; //feedback
 
-  var instructions = {
-    type: 'instructions',
-    pages: function () {
-      const pageOne =
-        '<div style="font-size:20px;"><b>INSTRUCTIONS</b><br><br><br>This is the symmetry span task. <br><br>This task has two parts: <br>(1) Square memorization <br>(2) Symmetry judgement<br><br><br></div>';
-      const pageTwo = `<div style="font-size:20px;">We will first practice SQUARE MEMORIZATION.<br><br>You will see a grid of squares on the screen.<br>Several squares will turn red one at a time (around 3 to 6 in a trial).<br>Try to remember which squares turned red and the order in which they turned red.<br><br>Below is an example of the grid with one square colored red. <br><br> <img src="${symmetrySpanExampleGrid}" style="height:300px; width:400px"></img></div>`;
-      const pageThree =
-        '<div style="font-size:20px;">After this, you will be shown an empty grid.<br>Your task is to select the squares that turned red in their correct presentation order. <br><br>Use the mouse to select the appropriate squares. <br>If you make a mistake use the provided "Backspace" button to clear your last response. <br><br>Remember, it is important that you select the squares in the order that you saw them.<br> So if you forget one of the squares, guess the best you can for that one, and select the rest in their correct order.<br><br>Press "Next" for practice trials.<br><br></div>';
-      return [pageOne, pageTwo, pageThree];
-    },
-    allow_backward: false,
-    button_label_next: 'Next',
-    show_clickable_nav: true,
-  };
-
-  var instructions2 = {
-    type: 'instructions',
-    pages: function () {
-      const pageOne = `<div style="font-size:20px;">We will now practice SYMMETRY JUDGEMENTS.<br><br>A black and white picture will appear on the screen and you have to judge if the picture is symmetrical or asymetrical.<br>A picture is symmetrical if its left half is identical to the right half when flipped.<br>Below are examples of symmetrical and asymetrical pictures:<br> <img src="${symm_instructions}" style="height:300px; width:450px"></img><br><br>Please reach out to us if you have not understood the difference between the symmetrical and asymetrical pictures.<br>Press "Next" to start practicing symmetry judgements.</div>`;
-      return [pageOne];
-    },
-    allow_backward: false,
-    button_label_next: 'Next',
-    show_clickable_nav: true,
-  };
-
-  var instructions3 = {
-    type: 'instructions',
-    pages: function () {
-      const pageOne =
-        '<div style="font-size:20px;">We will now practice the two tasks together.<br><br>In the next practice set, you will first be presented with a red colored square.<br>Try and remember the position of that colored square.<br>After the colored square dissapears, you will be asked to make a symmetry judgement of a black and white picture.<br><br>Try making the symmetry judgement as soon as possible.<br>Each symmetry judgement picture will be presented for only 6 seconds.<br><br></div>';
-      const pageTwo =
-        '<div style="font-size:20px;">After the symmetry judgement, you will be shown another colored square to remember,<br>which will be followed by another symmetry judgement.<br><br>Therefore, colored square presentations and symmetry judgements will alternate.<br>After 3 to 6 squares have been presented, the recall grid will appear.<br>Use the mouse to select the presented squares in their correct order.<br><br>Do you have any questions?<br>Press "Next" to start practice rounds.<br><br></div>';
-      return [pageOne, pageTwo];
-    },
-    allow_backward: false,
-    button_label_next: 'Next',
-    show_clickable_nav: true,
-  };
-
   var instructions4 = {
     type: 'instructions',
     pages: function () {
       const pageOne =
-        '<div style="font-size:20px;">We have finished with the practice trials.<br><br>We will now start with the main trials.<br>If you have not understood the task, please reach out to us before continuing.<br><br>Press "Next" to start the trials.<br><br></div>';
+        '<div style="font-size:20px;">Your task is to remember the sequence of red grid cells.<br><br>In between, you will also be asked to judge whether images are symmetric or not.</div>';
       return [pageOne];
     },
     allow_backward: false,
@@ -232,14 +185,14 @@ const experiment = new Promise(resolve => {
         ' out of ' +
         globalThis.nSquares +
         '</font> squares in their correct order.</b><br><br>';
-      if (n > nPracticeTrials) {
-        pageOne +=
-          "You made <font color='blue'>" +
-          nSymmetryAcc +
-          ' out of ' +
-          globalThis.nSquares +
-          '</font> accurate symmetry judgement(s).<br><br></div>';
-      }
+
+      pageOne +=
+        "You made <font color='blue'>" +
+        nSymmetryAcc +
+        ' out of ' +
+        globalThis.nSquares +
+        '</font> accurate symmetry judgement(s).<br><br></div>';
+
       return [pageOne];
     },
     allow_backward: false,
@@ -283,45 +236,12 @@ const experiment = new Promise(resolve => {
     repetitions: nTrials,
   };
 
-  var squaresDemoStack = {
-    timeline: [test_stimuli, end_test_stimuli],
-    repetitions: 10,
-  };
-
-  var squaresDemo = {
-    timeline: [squaresDemoStack, recall, feedback],
-    repetitions: nPracticeTrials,
-  };
-
-  var symmetryDemo = {
-    timeline: [cog_load_demo, feedbackSymm],
-    repetitions: 5,
-  };
-
-  var fullDemo = {
-    timeline: [test_stack, recall, feedback],
-    repetitions: nfullDemo,
-  };
-
   let timeline = [];
   timeline.push({
     type: 'fullscreen',
     fullscreen_mode: true,
   });
-  timeline = timeline.concat(
-    !debug
-      ? [
-          // instructions,
-          // squaresDemo,
-          // instructions2,
-          // symmetryDemo,
-          // instructions3,
-          // fullDemo,
-          // instructions4,
-          test_procedure,
-        ]
-      : [instructions4, test_procedure]
-  );
+  timeline = timeline.concat([instructions4, test_procedure]);
   timeline.push({
     type: 'fullscreen',
     fullscreen_mode: false,

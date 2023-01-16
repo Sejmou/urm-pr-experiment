@@ -26,11 +26,9 @@ import { createConclusionMessageBlock, storeTaskResults } from '../utils';
 const experiment = new Promise(resolve => {
   //----- CUSTOMIZABLE VARIABLES -----------------------------------------
 
-  var nTrials = 4; // number of trials in the test
   var minSetSize = 3; // starting digit length
   var stimuli_duration = 1000; // number of miliseconds to display each digit
   var recall_duration = null; // number of miliseconds to allow recall. If null, there is no time limit.
-  const debug = false; // set to true to skip demo procedure and show only two trials in test procedure (ignoring nTrials)
 
   //----------------------------------------------------------------------
 
@@ -54,31 +52,12 @@ const experiment = new Promise(resolve => {
     type: 'instructions',
     pages: function () {
       var pageOne =
-        "<div style='font-size:20px;'><b>INSTRUCTIONS</b><br><br>This is the digit span task.<br><br>In this task, you will have to remember a sequence of numbers presented on the screen one after the other.<br>At the end of each trial, enter all the numbers into the onscreen number-pad in their correct order.<br><br><u>Example:</u> if the sequence is '7 4 5 1', enter '7 4 5 1' in this exact order.<br><br>You will now be given practice trials to help you understand the task.<br>Press 'Next' to start the practice trials.<br><br></div>";
+        "<div style='font-size:20px;'><b>INSTRUCTIONS</b><br><br>This is the digit span task.<br><br>In this task, you will have to remember a sequence of numbers presented on the screen one after the other.<br>At the end of each trial, enter all the numbers into the onscreen number-pad in their correct order.<br><br><u>Example:</u> if the sequence is '7 4 5 1', enter '7 4 5 1' in this exact order.<br><br>You will now be given practice trials to help you understand the task.<br>Press 'Next' to start.<br><br></div>";
       return [pageOne];
     },
     allow_backward: false,
     button_label_next: 'Next',
     show_clickable_nav: true,
-  };
-
-  var after_demo_instructions = {
-    type: 'instructions',
-    pages: function () {
-      var pageOne =
-        "<div style='font-size:20px;'>You have completed the practice trials. <br><br> If you are clear about the task, click 'Next' to proceed to the main trials.</div>";
-      return [pageOne];
-    },
-    allow_backward: false,
-    button_label_next: 'Next',
-    show_clickable_nav: true,
-    on_finish: function () {
-      minSetSize = 3;
-      selection = jsPsych.randomization.sampleWithoutReplacement(
-        possibleNumbers,
-        minSetSize
-      );
-    },
   };
 
   var test_stimuli = {
@@ -172,11 +151,6 @@ const experiment = new Promise(resolve => {
     repetitions: 17,
   };
 
-  var test_procedure = {
-    timeline: [test_stack, recall, feedback],
-    repetitions: !debug ? nTrials : 2,
-  };
-
   var demo_procedure = {
     timeline: [test_stack, recall, feedback],
     repetitions: 3,
@@ -187,11 +161,7 @@ const experiment = new Promise(resolve => {
     type: 'fullscreen',
     fullscreen_mode: true,
   });
-  timeline = timeline.concat(
-    !debug
-      ? [instructions, demo_procedure, after_demo_instructions, test_procedure]
-      : [instructions, test_procedure]
-  );
+  timeline = timeline.concat([instructions, demo_procedure]);
   timeline.push({
     type: 'fullscreen',
     fullscreen_mode: false,
